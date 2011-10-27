@@ -23,11 +23,10 @@
     };
         
     Fuel.callback = function(data) {
-        alert(data['results'][0]['formatted_address']);
+        document.write(data['results'][0]['formatted_address']);        
     }
     
     Fuel.getLocation = function() {
-        alert(this.position_full);
         
         // Fetch I guess
         $.getJSON('/fetch?coords=' + this.position_full, function(data) { Fuel.callback(data); });
