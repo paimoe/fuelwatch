@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Fuel App</title>
+    
+</head>
+
+<body>
+
+    <h1>Welcome
+    {% if name %}{{ name }}{% else %}Guest{% endif %}
+    
+    </h1>
+    
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    
+    <script type="text/javascript">
+    
+    var Fuel = {
+        position: ''
+    };
+        
+    Fuel.callback = function(data) {
+        alert(data['results'][0]['formatted_address']);
+    }
+    
+    Fuel.getLocation = function() {
+        alert(this.position_full);
+        
+        // Fetch I guess
+        $.getJSON('/fetch?coords=' + this.position_full, function(data) { Fuel.callback(data); });
+    }
+    
+    Fuel.init = function() {
+        
+        if (!navigator.geolocation) {
+            document.write("Your browser doesn't support geolocation cause its a loser, what be your postcode?")
+            return false;
+        }
+        
+        g = navigator.geolocation.getCurrentPosition(function(p) {
+            Fuel.position = p.coords
+            Fuel.position_full = p.coords.latitude + ',' + p.coords.longitude
+            Fuel.getLocation();
+        });
+        
+        /*
+        u = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.position + '&sensor=false'
+        u = 'http://maps.googleapis.com/maps/api/js?sensor=false'
+        var latlng = new google.maps.LatLng(this.position.latitude, this.position.longitude)
+        
+        //data = $.getJSON(u, callback);
+        */
+        
+    }
+    
+    $(document).ready(Fuel.init());
+    </script>
+    
+
+</body>
+
+</html>
