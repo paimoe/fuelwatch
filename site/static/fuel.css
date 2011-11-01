@@ -1,2 +1,25 @@
 body {
-background: #f00;}
+    background: url('http://subtlepatterns.com/patterns/light_checkered_tiles.png') #ebebeb;
+    font-family:Lucida Grande, Arial;
+    font-size:13px; 
+    color:#464646;
+}
+
+#wrap {
+    margin: 50px auto;
+    width: 900px;
+    border: 1px solid #bab9b9;
+    background: #fff;
+}
+
+.content {
+}
+
+h1 {
+    font-size: 600%;
+    margin: 10px;
+}
+
+h1 span.adjacent {
+    font-size: 90%;
+}

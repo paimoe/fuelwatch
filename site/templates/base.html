@@ -3,15 +3,21 @@
 
 <head>
     <title>Fuel App</title>
-    
+    <link rel="stylesheet" type="text/css" href="/static/fuel.css" />
 </head>
 
 <body>
+<div id="wrap">
 
-    <h1>Welcome
-    {% if name %}{{ name }}{% else %}Guest{% endif %}
-    
-    </h1>
+    <div class="content">
+        {% block main %}
+        <h1>probably should stick a "loading, if it fails, go die" here</h1>
+        {% endblock %}
+        
+        {% block content %}
+        {% endblock %}       
+        
+    </div>
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -59,6 +65,7 @@
     </script>
     
 
+</div>
 </body>
 
 </html>
