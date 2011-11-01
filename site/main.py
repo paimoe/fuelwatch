@@ -17,16 +17,16 @@ def hello(name=None):
 @app.route("/fetch")
 def fetch():
     # u = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.position + '&sensor=false'
-    data = {"result": 'error'}
+    data = {"result": 'error', "message": ''}
     coords = request.args.get('coords', False)
     if not coords:
         data['message'] = 'Coordinates not found'
-        return data
+        return json.dumps(data) 
         
     r = requests.get('https://maps.googleapis.com/maps/api/geocode/json?sensor=false&latlng=' + coords)
     if r.status_code != 200:
         data['message'] = 'Incorrect response from Maps: %s' % r.status_code
-        return data
+        return json.dumps(data) 
         
     j = json.loads(r.content)
     
@@ -38,7 +38,7 @@ def fetch():
             
     if wanted is None:
         data['message'] = 'Could not find post_code in json response'
-        return data
+        return json.dumps(data) 
         
     # result hasss.. the post code
     postcode = wanted['address_components'][0]['long_name']
@@ -47,7 +47,7 @@ def fetch():
     
     data['result'] = 'OK'
     data['message'] = postcode
-    return data
+    return json.dumps(data) # return json object
 
 
 
