@@ -1,1 +1,15 @@
 {% extends "base.html" %}
+
+{% block main %}
+    {% if pc %}
+    <h1>{{ pc }}</h1>
+    {% else %}
+    <h1><span id="before">Postcode is ...</span>6000</h1>
+    {% endif %}
+{% endblock %}
+
+
+
+{% block content %}
+
+{% endblock %}

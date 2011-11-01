@@ -7,12 +7,11 @@ import requests
 import json
 import sys,os
 
+import fuelwatch as fw
+
 app = Flask(__name__)
 
-@app.route("/")
-def hello(name=None):
-	return render_template('index.html', name=name)
-    
+#DEBUG = 'local' in sys.argv    
     
 @app.route("/fetch")
 def fetch():
@@ -49,6 +48,23 @@ def fetch():
     data['message'] = postcode
     return json.dumps(data) # return json object
 
+@app.route("/<int:postcode>")
+@app.route("/")
+def hello(postcode=None):
+    print fw.base_url
+    # This should then launch the JS
+    if postcode is None or len(str(postcode)) != 4:
+        msg = "Default"
+        return render_template('index.html', msg="Default")
+        
+    else:
+        pc = postcode
+        denyJS = True
+        
+        # Get all pricing information, format, and send to browser
+        
+        return render_template('index.html', pc=postcode, denyJS=True)
+    return render_template('index.html')
 
 
 if __name__ == "__main__":

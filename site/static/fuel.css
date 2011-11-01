@@ -23,3 +23,8 @@ h1 {
 h1 span.adjacent {
     font-size: 90%;
 }
+
+h1 span#before {
+    font-size: 20% ;
+    display: block;
+}
