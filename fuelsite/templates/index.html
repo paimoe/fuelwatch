@@ -11,5 +11,12 @@
 
 
 {% block content %}
-
+<div class="information">
+    
+</div>
+<div class="results"><b>prices</b>
+    {% for result in prices %}
+    <br />{{ result.price }}: {{ result.location }}
+    {% endfor %}
+</div>
 {% endblock %}

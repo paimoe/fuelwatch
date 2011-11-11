@@ -51,7 +51,7 @@ def fetch():
 @app.route("/<int:postcode>")
 @app.route("/")
 def hello(postcode=None):
-    print fw.base_url
+    
     # This should then launch the JS
     if postcode is None or len(str(postcode)) != 4:
         msg = "Default"
@@ -62,8 +62,10 @@ def hello(postcode=None):
         denyJS = True
         
         # Get all pricing information, format, and send to browser
+        suburb = fw.find_suburb(pc)
+        all = fw.fetch(suburb)
         
-        return render_template('index.html', pc=postcode, denyJS=True)
+        return render_template('index.html', pc=postcode, denyJS=True, prices=all)
     return render_template('index.html')
 
 

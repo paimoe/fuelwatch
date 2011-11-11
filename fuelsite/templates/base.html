@@ -11,7 +11,7 @@
 
     <div class="content">
         {% block main %}
-        <h1>probably should stick a "loading, if it fails, go die" here</h1>
+        <h1>probably should stick a "loading" here</h1>
         {% endblock %}
         
         {% block content %}
@@ -44,7 +44,7 @@
     Fuel.init = function() {
         
         // Detect if $ exists, otherwise internet is broken LIKE ALWAYS
-        
+        {% if not denyJS %}
         if (!navigator.geolocation) {
             document.write("Your browser doesn't support geolocation cause its a loser, what be your postcode?")
             return false;
@@ -55,6 +55,7 @@
             Fuel.position_full = p.coords.latitude + ',' + p.coords.longitude
             Fuel.getLocation();
         });
+        {% endif %}
         
         /*
         u = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.position + '&sensor=false'

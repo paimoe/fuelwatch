@@ -1,7 +1,7 @@
 # Download page from fuelwatch, parse for fuel costs
 import feedparser
 import sqlite3
-import sys
+import sys, os
 
 base_url = 'http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Suburb=%s&Surrounding=yes'
 
@@ -10,12 +10,14 @@ def find_suburb(postcode=None):
         postcode = 6000
     
     # SQLite connection, get thingy
-    con = sqlite3.Connection('../postcodes.sqlite')
+    con = sqlite3.Connection('./postcodes.sqlite')
     cur = con.cursor()
     
     cur.execute("SELECT postcode, locality FROM postcodes WHERE postcode = ?", (postcode,))
     
     pc = cur.fetchone()
+    
+    print "Returning {0} for postcode {1}".format(pc[1], pc[0])
     
     return {
         "postcode": pc[0],
@@ -28,10 +30,16 @@ def fetch(suburb=None):
     
     if suburb is None:
         suburb = "Perth"
+    else:
+        suburb = suburb['suburb']
     
     f = feedparser.parse(base_url % suburb)
     
+    print "Fetching %s" % (base_url % suburb)
+    
     result = []
+    
+    # if !entries, find next suburb or something like that iunno
 
     for entry in f.entries:
         
