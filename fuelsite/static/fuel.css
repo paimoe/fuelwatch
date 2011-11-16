@@ -29,3 +29,8 @@ h1 span#before {
     font-size: 20% ;
     display: block;
 }
+
+#header-data p {
+    font-weight: bold;
+    margin: 10px;
+}

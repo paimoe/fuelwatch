@@ -11,9 +11,11 @@
 <div id="wrap">
 
     <div class="content">
+        <header class="row">
         {% block main %}
-        <h1>probably should stick a "loading" here</h1>
+        <div class="span8 offset4">Perthfuel.com</div>
         {% endblock %}
+        </header>
         
         {% block content %}
         {% endblock %}       
@@ -36,7 +38,7 @@
                 // Now waits for pricing data, before loading le page
                 suburb_used = xhr.getResponseHeader('X-Perthfuel-Suburb');
                 $('h1').text(data['message']);
-                
+                $('#header-data p').text(suburb_used);
             });
         }      
     }

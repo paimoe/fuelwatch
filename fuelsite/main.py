@@ -77,7 +77,7 @@ def hello(postcode=None):
         suburb = fw.find_suburb(pc)
         all = fw.fetch(suburb)
         
-        return render_template('index.html', pc=postcode, denyJS=True, prices=all['results'])
+        return render_template('index.html', pc=postcode, denyJS=True, prices=all['results'], suburb_used=all['using'])
     return render_template('index.html')
 
 

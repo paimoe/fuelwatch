@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 
 {% block main %}
-    {% if pc %}
-    <h1>{{ pc }}</h1>
-    {% else %}
-    <h1>Attempting to detect your location</h1>
-    {% endif %}
+    <div class="span4" id="header-data">
+        {% if pc %}
+        <h1>{{ pc }}</h1>
+        <p>{{ suburb_used }}</p>
+        {% else %}
+        <h1>Detecting</h1>
+        <p></p>
+        {% endif %}
+    </div>
+    {{ super() }}
 {% endblock %}
 
 
@@ -17,13 +22,17 @@
 <div class="row" id="dataset">
     <div class="span8" id="dataset-table">
         {% if pc %}
-        {   % include "dataset_table.html" %}
+            {% include "dataset_table.html" %}
         {% else %}
             <img src="/static/ajax-loader.gif" />
         {% endif %}
     </div>
     <div class="span8">
-    
+        {% if pc %}
+            {% include "dataset_maps.html" %}
+        {% else %}
+            <img src="/static/ajax-loader.gif" />
+        {% endif %}
     </div>
 </div>
 {% endblock %}
