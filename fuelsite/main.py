@@ -41,7 +41,6 @@ def fetch():
         
     # result hasss.. the post code
     postcode = wanted['address_components'][0]['long_name']
-    print wanted['address_components']
     print "POSTCODE IS " + postcode
     
     data['result'] = 'OK'
