@@ -39,6 +39,17 @@
                 suburb_used = xhr.getResponseHeader('X-Perthfuel-Suburb');
                 $('h1').text(data['message']);
                 $('#header-data p').text(suburb_used);
+                
+                // Generate map data
+                console.log(Fuel.position);
+                var latlng = new google.maps.LatLng(Fuel.position.latitude, Fuel.position.longitude);
+                var myOptions = {
+                    zoom: 8,
+                    center: latlng,
+                    mayTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById('dataset-map'), myOptions);
+                alert($('#dataset-map').html());
             });
         }      
     }
