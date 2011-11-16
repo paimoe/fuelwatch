@@ -4,19 +4,22 @@
     {% if pc %}
     <h1>{{ pc }}</h1>
     {% else %}
-    <h1><span id="before">Postcode is ...</span>6000</h1>
+    <h1>Attempting to detect your location</h1>
     {% endif %}
 {% endblock %}
 
 
 
 {% block content %}
-<div class="information">
+<div id="information">
     
 </div>
-<div class="results"><b>prices</b>
-    {% for result in prices %}
-    <br />{{ result.price }}: {{ result.location }}
-    {% endfor %}
+<div class="row" id="dataset">
+    <div class="span8" id="dataset-table">
+        {% include "dataset_table.html" %}
+    </div>
+    <div class="span8">
+    
+    </div>
 </div>
 {% endblock %}

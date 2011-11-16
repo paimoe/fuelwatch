@@ -1,0 +1,13 @@
+{% if prices %}
+<table class="zebra-striped">
+    <tbody>
+        {% for result in prices %}
+        <tr>
+            <td width="15%"><span class="label success" style="font-size: 110%;">{{ result.price }}</span></td>
+            <td>{{ result.brand }}, {{ result.location }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>    
+<a class="results-next" href="p2">s</a>
+{% endif %}
