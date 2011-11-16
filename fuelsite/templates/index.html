@@ -16,7 +16,11 @@
 </div>
 <div class="row" id="dataset">
     <div class="span8" id="dataset-table">
-        {% include "dataset_table.html" %}
+        {% if pc %}
+        {   % include "dataset_table.html" %}
+        {% else %}
+            <img src="/static/ajax-loader.gif" />
+        {% endif %}
     </div>
     <div class="span8">
     
