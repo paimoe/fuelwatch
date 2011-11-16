@@ -1,6 +1,6 @@
 # Yeah go Flask
 from flask import Flask
-from flask import render_template, url_for, request
+from flask import render_template, url_for, request, abort
 
 import feedparser
 import requests
@@ -12,6 +12,17 @@ import fuelwatch as fw
 app = Flask(__name__)
 
 #DEBUG = 'local' in sys.argv    
+
+@app.route("/ajax/<t>", methods=['POST'])
+def ajax(t):
+    if t == 'dataset':
+        # Is sent a postcode... then figures out the suburb
+        # Returns a template of dataset_table.html, which is then dynamically loaded
+        postcode = request.form['postcode']
+        suburb = fw.find_suburb(postcode)
+        data = fw.fetch(suburb) # Should be result
+        return render_template('dataset_table.html', prices=data['results'])
+    abort(403)
     
 @app.route("/fetch")
 def fetch():
@@ -64,7 +75,7 @@ def hello(postcode=None):
         suburb = fw.find_suburb(pc)
         all = fw.fetch(suburb)
         
-        return render_template('index.html', pc=postcode, denyJS=True, prices=all)
+        return render_template('index.html', pc=postcode, denyJS=True, prices=all['results'])
     return render_template('index.html')
 
 

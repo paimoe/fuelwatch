@@ -15,38 +15,48 @@ def find_suburb(postcode=None):
     
     cur.execute("SELECT postcode, locality FROM postcodes WHERE postcode = ?", (postcode,))
     
-    pc = cur.fetchone()
+    pc = cur.fetchall()
     
-    print "Returning {0} for postcode {1}".format(pc[1], pc[0])
+    # pc is list of tuples(postcode, locality)
+    # locality is what we pass to rss
     
-    return {
-        "postcode": pc[0],
-        "suburb": pc[1],
-    }
+    #for i in pc:
+    #    print "Returning {0} for postcode {1}".format(i[1], i[0])
+        
+    return pc
 
 def fetch(suburb=None):
     
     #http://stackoverflow.com/questions/2299454/how-do-quickly-search-through-a-csv-file-in-python
     
     if suburb is None:
-        suburb = "Perth"
+        suburb = iter([(6000, "Perth")])
     else:
-        suburb = suburb['suburb']
+        suburb = iter(suburb)
     
-    f = feedparser.parse(base_url % suburb)
-    
-    print "Fetching %s" % (base_url % suburb)
+    results = []
+    while len(results) == 0:
+        try:
+            where = suburb.next()
+            
+            f = feedparser.parse(base_url % where[1])
+            
+            if len(f.entries) > 0:
+                results = f.entries
+                using = where
+        except StopIteration:
+            # Cheese it
+            print "Cannot find pricing information"
+            return "NotFound" # oh shit i should add my own rad exceptions
     
     result = []
-    
-    # if !entries, find next suburb or something like that iunno
 
-    for entry in f.entries:
+    for entry in results:
         
         relevant = {
             'price': entry['price'],
             'updated': entry['updated'],
-            'location': entry['location'],
+            'location': entry['location'].strip().title(),
             'brand': entry['brand'],
             'coords': [entry['latitude'], entry['longitude']],
             'address': entry['address'],
@@ -57,8 +67,16 @@ def fetch(suburb=None):
         #for k,v in relevant.iteritems():
         #    print "\t" + k + ": " + str(v)
             
-    return result
+    return {
+        "using": where[1],
+        "postcode": where[0],
+        "results": result
+    }
 
 if __name__ == "__main__":
     pc = sys.argv[1]
-    print find_suburb(pc)
+    s2 = find_suburb(pc)
+    s = fetch(s2)
+    print "Using: %s" % s['using']
+    print "Postcode: %s" % s['postcode']
+    print s['results'][0]
