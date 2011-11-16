@@ -23,12 +23,13 @@ def git_push():
         abort("Commit changes bro")
     
 def deploy_wf():
+    git_push()
     with cd("/home/paimoe/webapps/perthfuel/"):
         run("git stash") # maybe
         run("git pull origin master") # What bout conflicts olol
         run("apache2/bin/restart")
-
-def deploy():
+        
+def deploy_epio():
     git_push()
-    deploy_wf()
+    local("epio upload") # totally complicated
 
