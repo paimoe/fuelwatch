@@ -1,6 +1,6 @@
 # Yeah go Flask
 from flask import Flask
-from flask import render_template, url_for, request, abort
+from flask import render_template, url_for, request, abort, make_response
 
 import feedparser
 import requests
@@ -21,7 +21,9 @@ def ajax(t):
         postcode = request.form['postcode']
         suburb = fw.find_suburb(postcode)
         data = fw.fetch(suburb) # Should be result
-        return render_template('dataset_table.html', prices=data['results'])
+        response = make_response(render_template('dataset_table.html', prices=data['results']))
+        response.headers['X-Perthfuel-Suburb'] = data['using']
+        return response
     abort(403)
     
 @app.route("/fetch")

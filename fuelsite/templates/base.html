@@ -31,10 +31,13 @@
         
     Fuel.callback = function(data) {
         if (data['result'] == "OK") {
-            $('h1').text(data['message']);
             
-            $('#dataset-table').load('/ajax/dataset', {'postcode': data['message']});
-            
+            $('#dataset-table').load('/ajax/dataset', {'postcode': data['message']}, function(response, status, xhr) {
+                // Now waits for pricing data, before loading le page
+                suburb_used = xhr.getResponseHeader('X-Perthfuel-Suburb');
+                $('h1').text(data['message']);
+                
+            });
         }      
     }
     
