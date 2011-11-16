@@ -20,6 +20,7 @@
         {% block content %}
         {% endblock %}       
         
+        <p>footer</p>
     </div>
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -30,6 +31,21 @@
     var Fuel = {
         position: ''
     };
+    
+    Fuel.map = function() {
+        console.log(Fuel.position);
+        var latlng = new google.maps.LatLng(Fuel.position.latitude, Fuel.position.longitude);
+        console.log(latlng);
+        var myOptions = {
+            zoom: 13,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        console.log(myOptions);
+        map_container = $('#dataset-map').get(0);
+        var map = new google.maps.Map(map_container, myOptions);
+        console.log(map);        
+    }
         
     Fuel.callback = function(data) {
         if (data['result'] == "OK") {
@@ -41,17 +57,7 @@
                 $('#header-data p').text(suburb_used);
                 
                 // Generate map data
-                console.log(Fuel.position);
-                var latlng = new google.maps.LatLng(Fuel.position.latitude, Fuel.position.longitude);
-                var myOptions = {
-                    zoom: 2,
-                    center: latlng,
-                    mayTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                console.log(myOptions);
-                var map = new google.maps.Map(document.getElementById('dataset-map'), myOptions);
-                console.log(map);
-                alert($('#dataset-map').html());
+                Fuel.map();
             });
         }      
     }
