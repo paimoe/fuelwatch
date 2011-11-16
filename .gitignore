@@ -2,3 +2,4 @@
 *.swp
 apache2
 htdocs
+.epio-app
