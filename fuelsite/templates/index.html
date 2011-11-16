@@ -27,12 +27,14 @@
             <img src="/static/ajax-loader.gif" />
         {% endif %}
     </div>
-    <div class="span8" id="dataset-map">
+    <div class="span8">
+        <div id="dataset-map" style="width: 450px; height: 450px; display: block;">
         {% if pc %}
             {% include "dataset_map.html" %}
         {% else %}
             <img src="/static/ajax-loader.gif" />
         {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

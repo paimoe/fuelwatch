@@ -44,11 +44,13 @@
                 console.log(Fuel.position);
                 var latlng = new google.maps.LatLng(Fuel.position.latitude, Fuel.position.longitude);
                 var myOptions = {
-                    zoom: 8,
+                    zoom: 2,
                     center: latlng,
                     mayTypeId: google.maps.MapTypeId.ROADMAP
                 };
+                console.log(myOptions);
                 var map = new google.maps.Map(document.getElementById('dataset-map'), myOptions);
+                console.log(map);
                 alert($('#dataset-map').html());
             });
         }      
