@@ -4,7 +4,9 @@
         {% for result in prices %}
         <tr>
             <td width="15%"><span class="label success" style="font-size: 110%;">{{ result.price }}</span></td>
-            <td>{{ result.brand }}, {{ result.location }}</td>
+            <td class="result" data-lat="{{ result.coords.0 }}" data-long="{{ result.coords.1 }}" data-title="{{ result.brand }} at {{ result.location }}">{{ result.brand }} at {{ result.location }}
+                <p class="moreinfo">{{ result.address }}</p>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

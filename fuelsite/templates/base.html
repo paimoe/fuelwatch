@@ -39,12 +39,24 @@
         var myOptions = {
             zoom: 13,
             center: latlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            
+            zoomControl: false,
+            panControl: false,
+            mapTypeControl: false,
         };
-        console.log(myOptions);
         map_container = $('#dataset-map').get(0);
-        var map = new google.maps.Map(map_container, myOptions);
-        console.log(map);        
+        
+        Fuel._map = new google.maps.Map(map_container, myOptions);
+        
+        var pos = new google.maps.Marker({
+            position: latlng,
+            map: Fuel._map,
+            title: "Where you are",
+        });    
+        
+        // Markers for places
+        $('td.result').each(this.add_pointer);   
     }
         
     Fuel.callback = function(data) {
@@ -58,6 +70,8 @@
                 
                 // Generate map data
                 Fuel.map();
+                
+                $('td.result').bind('click', Fuel.result_click);
             });
         }      
     }
@@ -66,6 +80,31 @@
         
         // Fetch I guess
         $.getJSON('/fetch?coords=' + this.position_full, function(data) { Fuel.callback(data); });
+    }
+    
+    Fuel.result_click = function() { 
+        // this = td.result
+        $(Fuel._open).toggleClass('bordered').children('p').slideUp();
+        $(this).toggleClass('bordered');
+        $(this).children('p').slideToggle('slow');
+        Fuel._open = this
+    }
+    
+    Fuel.add_pointer = function() {
+        p = new google.maps.LatLng($(this).data('lat'), $(this).data('long'));
+        m = new google.maps.Marker({
+            position: p,
+            map: Fuel._map,
+            title: $(this).data('title'),
+        });
+        console.log(p);
+        // Events for pointer
+        google.maps.event.addListener(m, 'click', (function(m, p) {
+            return function() {
+                Fuel._map.setCenter(p);
+                Fuel._map.setZoom(15);                
+            }
+        })(m, p));
     }
     
     Fuel.init = function() {
@@ -84,6 +123,8 @@
         });
         {% endif %}
         
+        this._map = ''; // Map object
+        this._open = ''; // Currently selected result
         /*
         u = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.position + '&sensor=false'
         u = 'http://maps.googleapis.com/maps/api/js?sensor=false'
@@ -91,14 +132,11 @@
         
         //data = $.getJSON(u, callback);
         */
-        
     }
     
-    if (typeof($) == "undefined") { alert("internetttt"); } else {
-    
-    $(document).ready(Fuel.init());
-    
-}
+    if (typeof($) == "undefined") { alert("internet not working as usual"); } else {
+        $(document).ready(Fuel.init());
+    }
     </script>
     
 
