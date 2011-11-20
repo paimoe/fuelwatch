@@ -5,6 +5,15 @@ import sys, os
 
 base_url = 'http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Suburb=%s&Surrounding=yes'
 
+class NoDataException(Exception):
+    def __init__(self, value="0000"):
+        self.parameter = value
+    def __str__(self):
+        return repr(self.parameter)
+        
+class NoSuburbException(Exception):
+    pass
+
 def find_suburb(postcode=None):
     if postcode is None:
         postcode = 6000
@@ -28,6 +37,9 @@ def find_suburb(postcode=None):
 def fetch(suburb=None):
     
     #http://stackoverflow.com/questions/2299454/how-do-quickly-search-through-a-csv-file-in-python
+    if len(suburb) == 0:
+        raise NoSuburbException()
+    using_postcode = suburb[0][0]
     
     if suburb is None:
         suburb = iter([(6000, "Perth")])
@@ -46,8 +58,7 @@ def fetch(suburb=None):
                 using = where
         except StopIteration:
             # Cheese it
-            print "Cannot find pricing information"
-            return "NotFound" # oh shit i should add my own rad exceptions
+            raise NoDataException(using_postcode)
     
     result = []
 
