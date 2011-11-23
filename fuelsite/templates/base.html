@@ -93,15 +93,44 @@
         // this = td.result
         // if using phone {
         if (Fuel._mobile) {
+            
             // Hide all other results, so stick that one at the top. 
             // grab the map div, stick it under the result and set css to displayed
-            $('td.result').parent().hide();
-            $(this).parent().show();
             
-            map = $('#dataset-map').appendTo('#dataset-table');
-            google.maps.event.trigger(Fuel._map, 'resize');
-        } 
-        
+            // If already one open
+            if (Fuel._open_mobile) {
+                // Go back
+                $('header').show();
+                $('td.result').parent().show();
+                
+                $('#dataset-map').hide();
+                
+                $(this).toggleClass('bordered');
+                $(this).children('p').slideUp();
+                
+                Fuel._open_mobile = false;
+                
+            } else {
+                
+                // Open a new result
+                $('header').hide();
+                id = $(this).attr('id');
+                
+                $('td.result').parent().hide();
+                $(this).parent().show();
+                
+                Fuel.map_functions.move(Fuel.results[id].latlng);
+                
+                map = $('#dataset-map').show().appendTo('#dataset-table');
+                google.maps.event.trigger(Fuel._map, 'resize');
+                
+                $(this).toggleClass('bordered');
+                $(this).children('p').slideToggle('slow');
+                
+                Fuel._open_mobile = true;
+            }
+        } else {
+                    
         id = $(this).attr('id');
         $(Fuel._open).toggleClass('bordered').children('p').slideUp();
         $(this).toggleClass('bordered');
@@ -110,7 +139,8 @@
         // Move map
         Fuel.map_functions.move(Fuel.results[id].latlng);
         
-        Fuel._open = this
+        Fuel._open = this         }
+        console.log(Fuel._open_mobile);
     }
     
     Fuel.add_pointer = function() {
@@ -185,6 +215,7 @@
         
         this._map = ''; // Map object
         this._open = ''; // Currently selected result
+        this._open_mobile = false;
     }
     
     if (typeof($) == "undefined") { alert("internet not working as usual"); } else {
