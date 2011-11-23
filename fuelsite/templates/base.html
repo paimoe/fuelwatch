@@ -29,7 +29,8 @@
     <script type="text/javascript">
     
     var Fuel = {
-        position: ''
+        position: '',
+        results: [],
     };
     
     Fuel.map = function() {
@@ -71,7 +72,7 @@
                 // Generate map data
                 Fuel.map();
                 
-                $('td.result').bind('click', Fuel.result_click);
+                $('td.result').bind('click', Fuel.open_result);
             });
         }      
     }
@@ -82,29 +83,61 @@
         $.getJSON('/fetch?coords=' + this.position_full, function(data) { Fuel.callback(data); });
     }
     
-    Fuel.result_click = function() { 
+    Fuel.open_result = function() { 
         // this = td.result
+        id = $(this).attr('id');
         $(Fuel._open).toggleClass('bordered').children('p').slideUp();
         $(this).toggleClass('bordered');
         $(this).children('p').slideToggle('slow');
+        
+        // Move map
+        Fuel.map_functions.move(Fuel.results[id].latlng);
+        
         Fuel._open = this
     }
     
     Fuel.add_pointer = function() {
-        p = new google.maps.LatLng($(this).data('lat'), $(this).data('long'));
+        t = $(this);
+        p = new google.maps.LatLng(t.data('lat'), t.data('long'));
         m = new google.maps.Marker({
             position: p,
             map: Fuel._map,
             title: $(this).data('title'),
         });
-        console.log(p);
+        
         // Events for pointer
-        google.maps.event.addListener(m, 'click', (function(m, p) {
+        id = t.attr('id')
+        
+        x = (function(newthis, p) {
             return function() {
-                Fuel._map.setCenter(p);
-                Fuel._map.setZoom(15);                
+                Fuel.map_functions.move(p);
+                
+                Fuel.open_result.call(newthis);
             }
-        })(m, p));
+        })(this, p);
+        
+        Fuel.results[id] = {
+            'marker': m,
+            'latlng': p,
+        }
+        google.maps.event.addListener(m, 'click', x);
+    }
+    
+    Fuel.map_functions = {
+        bounce: function(marker) {
+            if (marker.getAnimation() != null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }            
+        },
+        move: function(latlng) {
+            Fuel._map.setCenter(latlng);
+            Fuel._map.setZoom(15);
+        },
+        move_out: function() {
+            Fuel._map.setZoom(8);
+        },
     }
     
     Fuel.init = function() {
@@ -112,7 +145,7 @@
         // Detect if $ exists, otherwise internet is broken LIKE ALWAYS
         {% if not denyJS %}
         if (!navigator.geolocation) {
-            document.write("Your browser doesn't support geolocation")
+            alert("Your browser doesn't support geolocation")
             return false;
         }
         
