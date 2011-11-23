@@ -38,9 +38,8 @@
     };
     
     Fuel.map = function() {
-        console.log(Fuel.position);
         var latlng = new google.maps.LatLng(Fuel.position.latitude, Fuel.position.longitude);
-        console.log(latlng);
+        
         var myOptions = {
             zoom: 13,
             center: latlng,
@@ -93,6 +92,16 @@
     Fuel.open_result = function() { 
         // this = td.result
         // if using phone {
+        if (Fuel._mobile) {
+            // Hide all other results, so stick that one at the top. 
+            // grab the map div, stick it under the result and set css to displayed
+            $('td.result').parent().hide();
+            $(this).parent().show();
+            
+            map = $('#dataset-map').appendTo('#dataset-table');
+            google.maps.event.trigger(Fuel._map, 'resize');
+        } 
+        
         id = $(this).attr('id');
         $(Fuel._open).toggleClass('bordered').children('p').slideUp();
         $(this).toggleClass('bordered');
