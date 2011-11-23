@@ -2,9 +2,11 @@
 <html>
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Fuel App</title>
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/fuel.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/fuel.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
@@ -85,6 +87,7 @@
     
     Fuel.open_result = function() { 
         // this = td.result
+        // if using phone {
         id = $(this).attr('id');
         $(Fuel._open).toggleClass('bordered').children('p').slideUp();
         $(this).toggleClass('bordered');
