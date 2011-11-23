@@ -61,10 +61,11 @@ def fetch(suburb=None):
             raise NoDataException(using_postcode)
     
     result = []
-
+    i = 0
     for entry in results:
         
         relevant = {
+            'id': i,
             'price': entry['price'],
             'updated': entry['updated'],
             'location': entry['location'].strip().title(),
@@ -75,6 +76,7 @@ def fetch(suburb=None):
         
         result.append(relevant)
         
+        i += 1
         #for k,v in relevant.iteritems():
         #    print "\t" + k + ": " + str(v)
             
