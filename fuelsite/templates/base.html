@@ -92,7 +92,8 @@
     Fuel.open_result = function() { 
         // this = td.result
         // if using phone {
-        if (Fuel._mobile) {
+        if (Fuel._mobile) {        
+        
             
             // Hide all other results, so stick that one at the top. 
             // grab the map div, stick it under the result and set css to displayed
@@ -119,10 +120,11 @@
                 $('td.result').parent().hide();
                 $(this).parent().show();
                 
-                Fuel.map_functions.move(Fuel.results[id].latlng);
                 
                 map = $('#dataset-map').show().appendTo('#dataset-table');
+                
                 google.maps.event.trigger(Fuel._map, 'resize');
+                Fuel.map_functions.move(Fuel.results[id].latlng);
                 
                 $(this).toggleClass('bordered');
                 $(this).children('p').slideToggle('slow');
@@ -181,7 +183,7 @@
         move: function(latlng) {
             // Need to totes hide all other markers
             Fuel._map.setCenter(latlng);
-            Fuel._map.setZoom(14);
+            Fuel._map.setZoom(Fuel._zoomlevel);
         },
         move_out: function() {
             Fuel._map.setZoom(8);
@@ -193,6 +195,7 @@
         // Completely hackish mobile detection shit
         if (parseInt($('#wrap').css('width')) <= 480) {
             this._mobile = true;
+            console.log($('#wrap').css('width'));
         }
         
         // Detect if $ exists, otherwise internet is broken LIKE ALWAYS
@@ -216,6 +219,7 @@
         this._map = ''; // Map object
         this._open = ''; // Currently selected result
         this._open_mobile = false;
+        this._zoomlevel = this._mobile ? 13 : 14;
     }
     
     if (typeof($) == "undefined") { alert("internet not working as usual"); } else {

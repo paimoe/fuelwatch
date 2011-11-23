@@ -89,7 +89,11 @@ and (max-width : 480px) {
         display: none;
     }
     #dataset-map {
-        width: 100%;
+        width: 320px;
+        height: 320px;
+    }
+    .span8 {
+        width: 320px;
     }
 }
 
