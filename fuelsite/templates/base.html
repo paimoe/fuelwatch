@@ -33,6 +33,8 @@
     var Fuel = {
         position: '',
         results: [],
+        
+        _mobile: false,
     };
     
     Fuel.map = function() {
@@ -79,8 +81,11 @@
         }      
     }
     
-    Fuel.getLocation = function() {
-        
+    Fuel.use_postcode = function(pc) {
+        $.getJSON('/fetch?postcode=' + pc, function(data) { Fuel.callback(data); });        
+    }
+    
+    Fuel.getLocation = function() {        
         // Fetch I guess
         $.getJSON('/fetch?coords=' + this.position_full, function(data) { Fuel.callback(data); });
     }
@@ -135,8 +140,9 @@
             }            
         },
         move: function(latlng) {
+            // Need to totes hide all other markers
             Fuel._map.setCenter(latlng);
-            Fuel._map.setZoom(15);
+            Fuel._map.setZoom(14);
         },
         move_out: function() {
             Fuel._map.setZoom(8);
@@ -144,6 +150,11 @@
     }
     
     Fuel.init = function() {
+        
+        // Completely hackish mobile detection shit
+        if (parseInt($('#wrap').css('width')) <= 480) {
+            this._mobile = true;
+        }
         
         // Detect if $ exists, otherwise internet is broken LIKE ALWAYS
         {% if not denyJS %}
@@ -157,17 +168,14 @@
             Fuel.position_full = p.coords.latitude + ',' + p.coords.longitude
             Fuel.getLocation();
         });
+        {% else %}//115.7309968 -31.64115744
+        Fuel.position = {'latitude': -31.64115744, 'longitude': 115.7309968}
+        Fuel.position_full = Fuel.position.latitude + ',' + Fuel.position.longitude
+        Fuel.use_postcode({{ pc }});
         {% endif %}
         
         this._map = ''; // Map object
         this._open = ''; // Currently selected result
-        /*
-        u = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.position + '&sensor=false'
-        u = 'http://maps.googleapis.com/maps/api/js?sensor=false'
-        var latlng = new google.maps.LatLng(this.position.latitude, this.position.longitude)
-        
-        //data = $.getJSON(u, callback);
-        */
     }
     
     if (typeof($) == "undefined") { alert("internet not working as usual"); } else {
