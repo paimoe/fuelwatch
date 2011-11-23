@@ -31,6 +31,11 @@ def fetch():
     # u = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.position + '&sensor=false'
     data = {"result": 'error', "message": ''}
     coords = request.args.get('coords', False)
+    postcode = request.args.get('postcode', False)
+    
+    if postcode:
+        return json.dumps({'message': postcode, 'result': 'OK'})
+    
     if not coords:
         data['message'] = 'Coordinates not found'
         return json.dumps(data) 
