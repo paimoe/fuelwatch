@@ -15,14 +15,14 @@
     <div class="content">
         <header class="row">
         {% block main %}
-        <div class="span8 offset4">Perthfuel.com</div>
+        <div class="span8 offset4">Perthfuel.ep.io</div>
         {% endblock %}
         </header>
         
         {% block content %}
         {% endblock %}       
         
-        <p>footer</p>
+        <p class="footer">Perthfuel.ep.io</p>
     </div>
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -222,7 +222,7 @@
         this._zoomlevel = this._mobile ? 13 : 14;
     }
     
-    if (typeof($) == "undefined") { alert("internet not working as usual"); } else {
+    if (typeof($) == "undefined") { alert("Failed to load jquery lib. Try refreshing"); } else {
         $(document).ready(Fuel.init());
     }
     </script>

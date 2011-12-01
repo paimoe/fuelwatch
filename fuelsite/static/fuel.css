@@ -55,6 +55,13 @@ td.bordered {
     height: 450px;
 }
 
+p.footer {
+    color: #666;
+    border-top: 1px solid #bab9b9;
+    padding: 10px auto;
+    text-align: center;
+}
+
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen
 and (min-device-width : 320px)
